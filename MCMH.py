@@ -51,7 +51,7 @@ sigmas=0.1*np.ones(len(Y))
 paso=1
 
 #el número de pasos que voy a realizar
-n=10
+n=20000
 
 #diccionario de betas
 todosbetas=[]
@@ -86,7 +86,5 @@ for i in range(n):
     todosbetas.append(betas)
     todosbeta0.append(beta0)
     
-    
-print(todosbetas)
-print(todosbeta0)
+
             
