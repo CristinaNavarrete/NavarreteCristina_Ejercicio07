@@ -1,3 +1,6 @@
+import numpy as np
+import numpy as np
+import matplotlib.pyplot as plt
 import sklearn.linear_model
 
 
@@ -11,16 +14,16 @@ def prior(mu):
     """
     Densidad de probabilidad de mu
     """
-    p = np.ones(len(mu))/(mu.max()-mu.min())
+    p = 1/(mu.max()-mu.min())
     return p
 
-def like(y, sigma, mu):
+def loglike(y, sigma, mu):
     """
     Likelihod de tener un dato x e incertidumbre sigma
     """
-    L = np.ones(len(mu))
-    for y_i,sigma_i in zip(y, sigma):
-        L *= (1.0/np.sqrt(2.0*np.pi*sigma_i**2))*np.exp(-0.5*(y_i-mu)**2/(sigma_i**2))
+    L=0
+    for i in range(len(Y)):
+        L +=  np.log((1.0/np.sqrt(2.0*np.pi*sigma[i]**2)))-(0.5*(y[i]-mu[i])**2/(sigma[i]**2))
     return L
 
 def modelo(X,beta,beta0):
@@ -33,8 +36,7 @@ def posterior(mu, y, sigma):
     Posterior calculado con la normalizacion adecuada
     """
     post =  like(y, sigma, mu) * prior(mu)
-    evidencia = np.trapz(post, mu)
-    return  post/evidencia
+    return  post
 
 #Xnew.shape
 
@@ -49,11 +51,13 @@ sigmas=0.1*np.ones(len(Y))
 paso=1
 
 #el número de pasos que voy a realizar
-n=1000
+n=10
 
 #diccionario de betas
 todosbetas=[]
+todosbeta0=[]
 todosbetas.append(betas)
+todosbeta0.append(beta0)
 #el algoritmo
 for i in range(n):
     ranStep0=paso*(np.random.uniform(-1,1))
@@ -80,7 +84,9 @@ for i in range(n):
             beta0=beta0new
             
     todosbetas.append(betas)
+    todosbeta0.append(beta0)
     
-
-
-        
+    
+print(todosbetas)
+print(todosbeta0)
+            
